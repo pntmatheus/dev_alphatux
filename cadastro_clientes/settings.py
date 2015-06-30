@@ -14,8 +14,8 @@ import os
 import dj_database_url
 from unipath import Path
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-#BASE_DIR = Path(__file__).parent
+#BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = Path(__file__).parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -63,7 +63,7 @@ WSGI_APPLICATION = 'cadastro_clientes.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -72,11 +72,12 @@ DATABASES = {
 }
 
 '''
+
+
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///' + BASE_DIR.child('db.sqlite3'))
 }
-'''
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -95,9 +96,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 #STATIC_ROOT = BASE_DIR.child('static_root')
+
+STATIC_ROOT = BASE_DIR.child('staticfiles')
 
 STATIC_URL = '/static/'
 
