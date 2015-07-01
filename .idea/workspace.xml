@@ -35,7 +35,7 @@
         <entry file="file://$PROJECT_DIR$/core/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.31384015">
-              <caret line="194" column="53" selection-start-line="194" selection-start-column="53" selection-end-line="194" selection-end-column="53" />
+              <caret line="194" column="16" selection-start-line="194" selection-start-column="16" selection-end-line="194" selection-end-column="16" />
               <folding>
                 <element signature="e#24#52#0" expanded="true" />
                 <element signature="e#716#912#0" expanded="false" />
@@ -48,9 +48,9 @@
                 <element signature="e#2573#2792#0" expanded="false" />
                 <element signature="e#2828#3898#0" expanded="false" />
                 <element signature="e#5148#5572#0" expanded="false" />
-                <element signature="e#7045#7686#0" expanded="false" />
-                <element signature="e#7734#8654#0" expanded="false" />
-                <element signature="e#8688#9000#0" expanded="false" />
+                <element signature="e#7038#7679#0" expanded="false" />
+                <element signature="e#7727#8647#0" expanded="false" />
+                <element signature="e#8681#8993#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -857,7 +857,7 @@
     <entry file="file://$PROJECT_DIR$/core/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.31384015">
-          <caret line="194" column="53" selection-start-line="194" selection-start-column="53" selection-end-line="194" selection-end-column="53" />
+          <caret line="194" column="16" selection-start-line="194" selection-start-column="16" selection-end-line="194" selection-end-column="16" />
           <folding>
             <element signature="e#24#52#0" expanded="true" />
             <element signature="e#716#912#0" expanded="false" />
@@ -870,9 +870,9 @@
             <element signature="e#2573#2792#0" expanded="false" />
             <element signature="e#2828#3898#0" expanded="false" />
             <element signature="e#5148#5572#0" expanded="false" />
-            <element signature="e#7045#7686#0" expanded="false" />
-            <element signature="e#7734#8654#0" expanded="false" />
-            <element signature="e#8688#9000#0" expanded="false" />
+            <element signature="e#7038#7679#0" expanded="false" />
+            <element signature="e#7727#8647#0" expanded="false" />
+            <element signature="e#8681#8993#0" expanded="false" />
           </folding>
         </state>
       </provider>

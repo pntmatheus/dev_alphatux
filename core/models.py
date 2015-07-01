@@ -192,7 +192,7 @@ class AP(models.Model):
     fabricante = models.ForeignKey(Fabricante, null=True)
     equipamento = ChainedForeignKey(Equipamento, chained_field="fabricante", chained_model_field="fabricante", auto_choose=True, null=True)
     firmware = models.CharField(max_length=50, blank=True)
-    ip_acesso = models.models.CharField(max_length=50)
+    ip_acesso = models.CharField(max_length=50)
     mac_ethernet = models.CharField(max_length=17, blank=True)
     mac_wireless = models.CharField(max_length=17)
     ssid = models.CharField(max_length=50)
