@@ -31,11 +31,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="293" column="45" selection-start-line="293" selection-start-column="45" selection-end-line="293" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.31384015">
+              <caret line="194" column="53" selection-start-line="194" selection-start-column="53" selection-end-line="194" selection-end-column="53" />
               <folding>
                 <element signature="e#24#52#0" expanded="true" />
                 <element signature="e#716#912#0" expanded="false" />
@@ -47,12 +47,10 @@
                 <element signature="e#2240#2541#0" expanded="false" />
                 <element signature="e#2573#2792#0" expanded="false" />
                 <element signature="e#2828#3898#0" expanded="false" />
-                <element signature="e#3932#5116#0" expanded="false" />
                 <element signature="e#5148#5572#0" expanded="false" />
-                <element signature="e#5603#7016#0" expanded="false" />
-                <element signature="e#7052#7693#0" expanded="false" />
-                <element signature="e#7741#8661#0" expanded="false" />
-                <element signature="e#8695#9007#0" expanded="false" />
+                <element signature="e#7045#7686#0" expanded="false" />
+                <element signature="e#7734#8654#0" expanded="false" />
+                <element signature="e#8688#9000#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -70,11 +68,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/requirements.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.22058824">
-              <caret line="8" column="15" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="7" column="15" selection-start-line="7" selection-start-column="15" selection-end-line="7" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -161,7 +159,6 @@
         <option value="$PROJECT_DIR$/smart_selects/widgets.py" />
         <option value="$PROJECT_DIR$/cadastro_clientes/urls.py" />
         <option value="$PROJECT_DIR$/core/admin.py" />
-        <option value="$PROJECT_DIR$/core/models.py" />
         <option value="$PROJECT_DIR$/runtime.txt" />
         <option value="$PROJECT_DIR$/core/forms.py" />
         <option value="$PROJECT_DIR$/cadastro_clientes/settings.py" />
@@ -169,6 +166,7 @@
         <option value="$PROJECT_DIR$/Procfile" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$PROJECT_DIR$/core/models.py" />
       </list>
     </option>
   </component>
@@ -176,7 +174,7 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1505" />
+    <option name="x" value="65" />
     <option name="y" value="-4" />
     <option name="width" value="1375" />
     <option name="height" value="904" />
@@ -233,6 +231,20 @@
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
             <PATH_ELEMENT USER_OBJECT="alphatux">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="alphatux">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="core">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
@@ -415,7 +427,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1505" y="-4" width="1375" height="904" extended-state="6" />
+    <frame x="65" y="-4" width="1375" height="904" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13163637" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -784,31 +796,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="293" column="45" selection-start-line="293" selection-start-column="45" selection-end-line="293" selection-end-column="45" />
-          <folding>
-            <element signature="e#24#52#0" expanded="true" />
-            <element signature="e#716#912#0" expanded="false" />
-            <element signature="e#954#1158#0" expanded="false" />
-            <element signature="e#1193#1425#0" expanded="false" />
-            <element signature="e#1460#1677#0" expanded="false" />
-            <element signature="e#1712#1929#0" expanded="false" />
-            <element signature="e#1970#2209#0" expanded="false" />
-            <element signature="e#2240#2541#0" expanded="false" />
-            <element signature="e#2573#2792#0" expanded="false" />
-            <element signature="e#2828#3898#0" expanded="false" />
-            <element signature="e#3932#5116#0" expanded="false" />
-            <element signature="e#5148#5572#0" expanded="false" />
-            <element signature="e#5603#7016#0" expanded="false" />
-            <element signature="e#7052#7693#0" expanded="false" />
-            <element signature="e#7741#8661#0" expanded="false" />
-            <element signature="e#8695#9007#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/runtime.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -861,9 +848,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/requirements.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22058824">
-          <caret line="8" column="15" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="15" selection-start-line="7" selection-start-column="15" selection-end-line="7" selection-end-column="15" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.31384015">
+          <caret line="194" column="53" selection-start-line="194" selection-start-column="53" selection-end-line="194" selection-end-column="53" />
+          <folding>
+            <element signature="e#24#52#0" expanded="true" />
+            <element signature="e#716#912#0" expanded="false" />
+            <element signature="e#954#1158#0" expanded="false" />
+            <element signature="e#1193#1425#0" expanded="false" />
+            <element signature="e#1460#1677#0" expanded="false" />
+            <element signature="e#1712#1929#0" expanded="false" />
+            <element signature="e#1970#2209#0" expanded="false" />
+            <element signature="e#2240#2541#0" expanded="false" />
+            <element signature="e#2573#2792#0" expanded="false" />
+            <element signature="e#2828#3898#0" expanded="false" />
+            <element signature="e#5148#5572#0" expanded="false" />
+            <element signature="e#7045#7686#0" expanded="false" />
+            <element signature="e#7734#8654#0" expanded="false" />
+            <element signature="e#8688#9000#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
