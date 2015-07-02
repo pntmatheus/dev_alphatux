@@ -111,7 +111,7 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='DistribuidorInterno',
+            name='DistribuidorInternooo',
             fields=[
                 ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
                 ('firmware', models.CharField(blank=True, max_length=50)),
