@@ -3,6 +3,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 
 from django.contrib import admin
+from core import views
 
 admin.autodiscover()
 
@@ -13,6 +14,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('smart_selects.urls')),
+    url(r'^$', include('core.urls')),
 )
 
 if settings.DEBUG:                                                              
