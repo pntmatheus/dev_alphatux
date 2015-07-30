@@ -8,3 +8,4 @@ whitenoise==2.0.1
 gunicorn==19.1.0
 psycopg2==2.5.3
 paramiko==1.15.2
+openpyxl==2.2.5
