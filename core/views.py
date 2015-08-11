@@ -14,6 +14,7 @@ def index(request):
 
 def valida_comando(ssh, comando):
     ssh.exec_command(comando)
+    #FAZER O ESQUEMA
     return "teste"
 
 def index(request):
