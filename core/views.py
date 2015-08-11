@@ -12,6 +12,10 @@ def index(request):
     return HttpResponse("Olá Mundo!!!")
 """
 
+def valida_comando(ssh, comando):
+    ssh.exec_command(comando)
+    return "teste"
+
 def index(request):
 
     wb = load_workbook(filename='clientesTerezinha.xlsx', read_only=True)
@@ -28,8 +32,32 @@ def index(request):
     pkey = paramiko.DSSKey.from_private_key_file(path, password=None)
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect('192.168.1.13', username='teste', pkey=pkey)
+    ssh.connect('192.168.1.13', username='admin', pkey=pkey)
 
+    #CONFIGURACOES INICIAIS
+    ##Setar IP
+    #ssh.exec_command("/ip address add address=192.168.5.1/24 interface=ether2 comment=\"IP INICIAL DJANGO\"")
+
+    ##Criar DHCP SERVER
+
+    comando = ":do { :put [/ip dhcp-server add add-arp=yes address-pool=static-only interface=ether1 name=\"AlphatuxZ3\" disabled=no] } on-error={ :put \"deu meerda\"}"
+
+    #comando = ":do { :put [:resolve www.example.com] }"
+    #stdin, stdout,stderr = ssh.exec_command(comando)
+    teste = valida_comando(ssh, comando)
+
+
+    #stdin, stdout,stderr = ssh.exec_command(":do {:put \"deu merda\"}")
+
+    #teste = stdout.channel.recv_exit_status()
+
+    ssh.close()
+
+
+
+    return HttpResponse(teste)
+
+"""
     #### IP ADDRESS
     contador = 5
     for t in clientes:
@@ -71,11 +99,4 @@ def index(request):
         comando = "ip hotspot ip-binding add address=192.168."+str(contador)+".2 comment="+c+" mac-address="+m
         ssh.exec_command(comando)
         contador = contador + 1
-
-    stdin,stdout,stderr = ssh.exec_command('ip address print')
-    output = '<br>'.join([p for p in stdout])
-
-    #output = stderr.read()
-    #output = stdout.readlines()
-
-    return HttpResponse(comando)
+"""
