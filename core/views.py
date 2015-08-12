@@ -12,10 +12,25 @@ def index(request):
     return HttpResponse("Olá Mundo!!!")
 """
 
-def valida_comando(ssh, comando):
-    ssh.exec_command(comando)
-    #FAZER O ESQUEMA
-    return "teste"
+def valida_comando(ssh_session, comando):
+
+    mikrotik = ":do { :put [%s];} on-error={ :put \"deu merda\"; }" % comando
+
+    stdin, stdout,stderr = ssh_session.exec_command(mikrotik)
+
+    if any("deu merda" in s for s in stdout):
+        stdin, stdout,stderr = ssh_session.exec_command(comando)
+        teste = stdout.read()
+        teste = teste.decode("utf-8")
+        status = "FALHOU!!!!     ----------->     " + comando + " ----->> " + teste
+
+        #teste = "\n".join(item for item in stdout.read().splitlines() if '>' not in item)
+    else:
+        status = "Deu tudo certo"
+
+
+
+    return status
 
 def index(request):
 
@@ -41,23 +56,20 @@ def index(request):
 
     ##Criar DHCP SERVER
 
-    comando = ":do { :put [/ip dhcp-server add add-arp=yes address-pool=static-only interface=ether1 name=\"AlphatuxZ3\" disabled=no] } on-error={ :put \"deu meerda\"}"
+    comando = "/ip dhcp-server add add-arp=yes address-pool=static-only interface=ether1 name=\"AlphatuxZ3\" disabled=no"
 
     #comando = ":do { :put [:resolve www.example.com] }"
     #stdin, stdout,stderr = ssh.exec_command(comando)
     teste = valida_comando(ssh, comando)
 
 
-    #stdin, stdout,stderr = ssh.exec_command(":do {:put \"deu merda\"}")
 
-    #teste = stdout.channel.recv_exit_status()
-
-    ssh.close()
 
 
 
     return HttpResponse(teste)
 
+    ssh.close()
 """
     #### IP ADDRESS
     contador = 5
