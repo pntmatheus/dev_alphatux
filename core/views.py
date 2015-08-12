@@ -12,25 +12,25 @@ def index(request):
     return HttpResponse("Olá Mundo!!!")
 """
 
-def valida_comando(ssh_session, comando):
+def valida_comando(ssh_session, comandos):
 
-    mikrotik = ":do { :put [%s];} on-error={ :put \"deu merda\"; }" % comando
-
-    stdin, stdout,stderr = ssh_session.exec_command(mikrotik)
-
-    if any("deu merda" in s for s in stdout):
-        stdin, stdout,stderr = ssh_session.exec_command(comando)
-        teste = stdout.read()
-        teste = teste.decode("utf-8")
-        status = "FALHOU!!!!     ----------->     " + comando + " ----->> " + teste
+    retorno = []
+    for comando in comandos:
+        mikrotik = ":do { :put [%s];} on-error={ :put \"deu merda\"; }" % comando
+        stdin, stdout,stderr = ssh_session.exec_command(mikrotik)
+        if any("deu merda" in s for s in stdout):
+            stdin, stdout,stderr = ssh_session.exec_command(comando)
+            teste = stdout.read()
+            teste = teste.decode("utf-8")
+            retorno.append("FALHOU!!!!     ----------->     " + comando + " ----->> " + teste + "<br>")
+            #status = "FALHOU!!!!     ----------->     " + comando + " ----->> " + teste
 
         #teste = "\n".join(item for item in stdout.read().splitlines() if '>' not in item)
-    else:
-        status = "Deu tudo certo"
+        else:
+            #status = "Deu tudo certo"
+            retorno.append("OK! ----------> " + comando + "<br>")
 
-
-
-    return status
+    return retorno
 
 def index(request):
 
@@ -39,6 +39,7 @@ def index(request):
 
     clientes = []
     macs = []
+    comandos = []
 
     for p in ws["A1":"B78"]:
         clientes.append(p[0].value)
@@ -54,13 +55,16 @@ def index(request):
     ##Setar IP
     #ssh.exec_command("/ip address add address=192.168.5.1/24 interface=ether2 comment=\"IP INICIAL DJANGO\"")
 
+    ##Criar BRIDGE CLIENTES
+    comandos.append("/interface bridge add comment=\"Bridge dos Clientes\" name=bridge-clientes admin-mac=:put [/interface get ether1 mac-address]")
+    ##SETAR IP NA BRIDGE
+    comandos.append("/ip address add address=192.168.10.1/24 comment=\"IP Inicial da BRIDGE CLIENTES\" interface=bridge-clientes")
+    ##Adicionar INTERFACE 1 NA BRIDGE
+    comandos.append("/interface bridge port add bridge=bridge-clientes interface=ether1")
     ##Criar DHCP SERVER
+    comandos.append("/ip dhcp-server add add-arp=yes address-pool=static-only interface=bridge-clientes name=\"AlphatuxZ3\" disabled=no")
 
-    comando = "/ip dhcp-server add add-arp=yes address-pool=static-only interface=ether1 name=\"AlphatuxZ3\" disabled=no"
-
-    #comando = ":do { :put [:resolve www.example.com] }"
-    #stdin, stdout,stderr = ssh.exec_command(comando)
-    teste = valida_comando(ssh, comando)
+    teste = valida_comando(ssh, comandos)
 
 
 
