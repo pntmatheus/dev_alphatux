@@ -56,13 +56,28 @@ def index(request):
     #ssh.exec_command("/ip address add address=192.168.5.1/24 interface=ether2 comment=\"IP INICIAL DJANGO\"")
 
     ##Criar BRIDGE CLIENTES
-    comandos.append("/interface bridge add comment=\"Bridge dos Clientes\" name=bridge-clientes admin-mac=:put [/interface get ether1 mac-address]")
+    comandos.append("/interface bridge add comment=\"Bridge dos Clientes\" name=bridge-clientes admin-mac=[/interface get ether1 mac-address] auto-mac=no")
     ##SETAR IP NA BRIDGE
     comandos.append("/ip address add address=192.168.10.1/24 comment=\"IP Inicial da BRIDGE CLIENTES\" interface=bridge-clientes")
     ##Adicionar INTERFACE 1 NA BRIDGE
     comandos.append("/interface bridge port add bridge=bridge-clientes interface=ether1")
     ##Criar DHCP SERVER
-    comandos.append("/ip dhcp-server add add-arp=yes address-pool=static-only interface=bridge-clientes name=\"AlphatuxZ3\" disabled=no")
+    comandos.append("/ip dhcp-server add add-arp=yes lease-time=3d address-pool=static-only interface=bridge-clientes name=\"AlphatuxZ3\" disabled=no")
+    ##Adicionar PROFILE HOTSPOT
+    comandos.append("/ip hotspot profile add dns-name=\"\" hotspot-address=0.0.0.0 html-directory=hotspot http-proxy=0.0.0.0:0 login-by=mac mac-auth-password=\"\" name=alphatux-z3 rate-limit=\"\" smtp-server=0.0.0.0 use-radius=no")
+    ##Adicionar Planos no HOTSPOT USER PROFILE
+    ###Basico
+    comandos.append("/ip hotspot user profile add idle-timeout=none name=basico rate-limit=156k/256k shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no")
+    ###Intermediario
+    comandos.append("/ip hotspot user profile add idle-timeout=none name=intermediario rate-limit=300k/500k shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no")
+    ###1M
+    comandos.append("/ip hotspot user profile add idle-timeout=none name=1M rate-limit=400k/1000k shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no")
+    ###2M
+    comandos.append("/ip hotspot user profile add idle-timeout=none name=2M rate-limit=400k/2000k shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no")
+    ###Matheus
+    comandos.append("/ip hotspot user profile add idle-timeout=none name=matheus rate-limit=2500k/14500k shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no")
+    ###Ultra
+    comandos.append("/ip hotspot user profile add idle-timeout=none name=ultra rate-limit=1000k/3000k shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no")
 
     teste = valida_comando(ssh, comandos)
 
