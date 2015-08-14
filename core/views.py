@@ -32,6 +32,19 @@ def valida_comando(ssh_session, comandos):
 
     return retorno
 
+def add_plano(nome, download, upload, comandos):
+
+    plano = "/ip hotspot user profile add idle-timeout=none name=%s rate-limit=%s/%s shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no" % (nome,upload,download)
+    plano_bloqueado = "/ip hotspot user profile add advertise=yes advertise-interval=0s advertise-timeout=immediately advertise-url=bloqueado.html idle-timeout=none name=bloqueado-%s open-status-page=always shared-users=1 status-autorefresh=1m transparent-proxy=yes add-mac-cookie=no" % (nome)
+    comandos.append(plano)
+    comandos.append(plano_bloqueado)
+    return comandos
+
+def add_ip_gateway(nome, ip):
+    nome = "\"%s\"" % nome
+    comando = "ip address add address=%s interface=bridge-clientes comment=%s" % (ip, nome)
+    return comando
+
 def index(request):
 
     wb = load_workbook(filename='clientesTerezinha.xlsx', read_only=True)
@@ -41,7 +54,7 @@ def index(request):
     macs = []
     comandos = []
 
-    for p in ws["A1":"B78"]:
+    for p in ws["A1":"B278"]:
         clientes.append(p[0].value)
         macs.append(p[1].value)
 
@@ -67,17 +80,36 @@ def index(request):
     comandos.append("/ip hotspot profile add dns-name=\"\" hotspot-address=0.0.0.0 html-directory=hotspot http-proxy=0.0.0.0:0 login-by=mac mac-auth-password=\"\" name=alphatux-z3 rate-limit=\"\" smtp-server=0.0.0.0 use-radius=no")
     ##Adicionar Planos no HOTSPOT USER PROFILE
     ###Basico
-    comandos.append("/ip hotspot user profile add idle-timeout=none name=basico rate-limit=156k/256k shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no")
+    comandos = add_plano("basico","256k","156k",comandos)
     ###Intermediario
-    comandos.append("/ip hotspot user profile add idle-timeout=none name=intermediario rate-limit=300k/500k shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no")
+    comandos = add_plano("intermediario","500k","300k",comandos)
     ###1M
-    comandos.append("/ip hotspot user profile add idle-timeout=none name=1M rate-limit=400k/1000k shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no")
+    comandos = add_plano("1M", "1000k", "400k", comandos)
     ###2M
-    comandos.append("/ip hotspot user profile add idle-timeout=none name=2M rate-limit=400k/2000k shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no")
+    comandos = add_plano("2M", "2000k", "400k", comandos)
     ###Matheus
-    comandos.append("/ip hotspot user profile add idle-timeout=none name=matheus rate-limit=2500k/14500k shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no")
+    comandos = add_plano("matheus", "14500k", "2500k", comandos)
     ###Ultra
-    comandos.append("/ip hotspot user profile add idle-timeout=none name=ultra rate-limit=1000k/3000k shared-users=1 status-autorefresh=1m transparent-proxy=no add-mac-cookie=no")
+    comandos = add_plano("ultra", "3000k", "100k", comandos)
+
+
+
+    #ADD CLIENTES
+    sufixo = "192.168"
+    contador = 20
+    rede = 0
+    gateway = 1
+    endereco = 2
+    mascara = "/30"
+    for (c,m) in zip(clientes,macs):
+        if contador > 200:
+            contador = 20
+            gateway += 4
+        ip_gateway =  "%s.%s.%s%s" % (sufixo,str(contador),str(gateway),mascara)
+        comandos.append(add_ip_gateway(c,ip_gateway))
+        contador += 1
+
+
 
     teste = valida_comando(ssh, comandos)
 
