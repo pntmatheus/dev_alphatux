@@ -517,7 +517,11 @@ def index(request):
 
 
     comando = "/ip address print"
-    return HttpResponse(add_cliente(11,"Tiago Flavia Comodato","192.168.144","D4:CA:6D:50:E0:E3","1M",True, frequencia24ghz=False))
-# AlphatuxCedro
-# DC:9F:DB:62:BB:84
+    return HttpResponse(add_cliente(17,"Diene Batista Rodrigues","192.168.151","4C:5E:0C:0D:C8:1F","1M",True, frequencia24ghz=False))
+### 1 4C:5E:0C:FF:7B:39 Miguel Irigon
+### 2 4C:5E:0C:EA:7B:53 Lucas Pereira
+### 3 4C:5E:0C:A8:B2:BC Sabrina Ramires
+### 4 4C:5E:0C:0D:C8:1F Diene Batista Rodrigues
+def teste (request):
+    return HttpResponse("teste")
 

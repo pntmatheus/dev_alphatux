@@ -133,6 +133,13 @@ class PessoaAdmin(admin.ModelAdmin):
     inlines = [ClienteInline,]
     raw_id_fields = ('endereco',)
 
+    class Media:
+        js = (
+            'jquery_1_11.js',
+            'jquery_mask.js',
+            'teste.js',
+        )
+
     def save_model(self, request, obj, form, change):
         ### Gambiarra para procura com string sem acentuacao
         obj.search_dump = slugify(str(obj.nome + " " + obj.nome_fantasia))
@@ -282,12 +289,13 @@ class ReciboAdmin(admin.ModelAdmin):
 
 
         #Adicionar Pessoa que está emitindo o Recibo
+        #TODO Descobrir uma forma de validar se o usuário logado está vinculado à classe Pessoa
         obj.pessoa = Pessoa.objects.get(user__id=request.user.id)
 
         obj.save()
 
         obj.recibo_branco = "media/Recibos/" + str(obj.id)+'.pdf'
-
+        #TODO Fazer com que o upload de arquivo, seja somente em pdf
         if obj.recibo_assinado != "":
             obj.recibo_assinado = "media/RecibosAssinados/" + str(obj.id) + "_assinado.pdf"
 

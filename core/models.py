@@ -143,13 +143,13 @@ class Pessoa(models.Model):
 
     nome = models.CharField(max_length=100, default='')
     ### CPF/CPNJ ###
-    codigo = models.CharField(max_length=18, default='')
+    codigo = models.CharField("CPF/CNPJ", max_length=18, default='', validators=[])
     ### APELIDO/NOME FANTASIA ###
-    nome_fantasia = models.CharField(max_length=100, blank=True)
-    telefone1 = models.CharField(max_length=20)
-    telefone2 = models.CharField(max_length=20, blank=True)
+    nome_fantasia = models.CharField("Apelido/Nome Fantasia", max_length=100, blank=True)
+    telefone1 = models.CharField("Telefone Fixo", max_length=20)
+    telefone2 = models.CharField("Celular", max_length=20, blank=True)
     email = models.EmailField(blank=True)
-    observacoes = models.TextField(blank=True)
+    observacoes = models.TextField("Observações", blank=True)
     tipo_pessoa = models.ForeignKey(TipoPessoa)
     rg = models.CharField(max_length=15, blank=True)
     data_nascimento = models.DateField(blank=True, null=True)

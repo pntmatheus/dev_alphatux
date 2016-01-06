@@ -14,7 +14,8 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('smart_selects.urls')),
-    url(r'^$', include('core.urls')),
+    url(r'^cadastro/', include('core.urls')),
+    #url(r'^teste', include('core.urls')),
 )
 
 if settings.DEBUG:                                                              
