@@ -517,7 +517,7 @@ def index(request):
 
 
     comando = "/ip address print"
-    return HttpResponse(add_cliente(17,"Diene Batista Rodrigues","192.168.151","4C:5E:0C:0D:C8:1F","1M",True, frequencia24ghz=False))
+    return HttpResponse(add_cliente(18,"Bruno Fagundes","192.168.152","E4:8D:8C:C2:D9:97","1M",True, frequencia24ghz=False))
 ### 1 4C:5E:0C:FF:7B:39 Miguel Irigon
 ### 2 4C:5E:0C:EA:7B:53 Lucas Pereira
 ### 3 4C:5E:0C:A8:B2:BC Sabrina Ramires

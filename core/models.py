@@ -100,6 +100,7 @@ class Rua(models.Model):
     nome = models.CharField(max_length=50)
     bairro = models.ForeignKey(Bairro)
     tipo_endereco = models.ForeignKey(TipoEndereco)
+    search_dump = models.CharField(max_length=255, default='', blank=True, editable=False)
 
     def __str__(self):
         return self.tipo_endereco.abreviacao + " " + self.nome
@@ -110,53 +111,58 @@ class Cep(models.Model):
         verbose_name = 'Cep'
         verbose_name_plural = 'Ceps'
 
-    codigo = models.CharField(max_length=9)
-    rua = models.ForeignKey(Rua, null=True)
+    estado = models.ForeignKey(Estado)
+    cidade = ChainedForeignKey(Cidade, chained_field="estado", chained_model_field="estado", auto_choose=True)
+    bairro = ChainedForeignKey(Bairro, chained_field="cidade", chained_model_field="cidade", auto_choose=True)
+    rua = ChainedForeignKey(Rua, chained_field="bairro", chained_model_field="bairro", auto_choose=True)
+    codigo = models.CharField("CEP",max_length=9)
+
+    def get_nome(self):
+        return str(self.cidade) + ' - ' + str(self.bairro) + ' - ' + str(self.rua) + ' - CEP:' + ' ' + self.codigo
 
     def __str__(self):
-        return self.codigo
+        return str(self.cidade) + ' - ' + str(self.bairro) + ' - ' + str(self.rua) + ' - CEP:' + ' ' + self.codigo
 
 class Endereco(models.Model):
     class Meta():
         verbose_name = 'Endereço'
         verbose_name_plural = 'Endereços'
+        unique_together = ('cep', 'numero',)
 
-
-    estado = models.ForeignKey(Estado)
-    cidade = ChainedForeignKey(Cidade, chained_field="estado", chained_model_field="estado", auto_choose=True)
-    bairro = ChainedForeignKey(Bairro, chained_field="cidade", chained_model_field="cidade", auto_choose=True)
-    rua = ChainedForeignKey(Rua, chained_field="bairro", chained_model_field="bairro", auto_choose=True)
     cep = ChainedForeignKey(Cep, chained_field="rua", chained_model_field="rua", auto_choose=True)
     numero = models.CharField(max_length=10, default='')
     complemento = models.CharField(max_length=20, blank=True)
+    latitude = models.CharField(max_length=20, blank=True)
+    longitude = models.CharField(max_length=20, blank=True)
+    #### Coluna para utilizar no search_field sem acentuacao
 
     def get_nome(self):
-        return str(self.estado) + ' - ' + str(self.cidade) + ' - ' + str(self.bairro) + ' - ' + str(self.rua) + ' - Nº' + str(self.numero) +  '- CEP:' + ' ' + str(self.cep)
+        return str(self.cep) + ' - Nº' + str(self.numero)
 
     def __str__(self):
-        return str(self.estado) + ' - ' + str(self.cidade) + ' - ' + str(self.bairro) + ' - ' + str(self.rua) + ' - Nº' + str(self.numero) +  '- CEP:' + ' ' + str(self.cep)
+        return str(self.cep) + ' - Nº' + str(self.numero)
 
 class Pessoa(models.Model):
     class Meta():
         verbose_name = 'Pessoa'
         verbose_name_plural = 'Pessoas'
 
-    nome = models.CharField(max_length=100, default='')
+    nome = models.CharField("Nome Completo", max_length=100, default='')
+    tipo_pessoa = models.ForeignKey(TipoPessoa, default=1)
     ### CPF/CPNJ ###
     codigo = models.CharField("CPF/CNPJ", max_length=18, default='', validators=[])
+    rg = models.CharField("RG", max_length=15, blank=True)
+    data_nascimento = models.DateField("Data Nascimento/ Abertura",blank=True, null=True)
+    user = models.OneToOneField(User, verbose_name="Usuário", null=True, blank=True)
+    inscricao_estadual = models.CharField("Inscrição Estadual", max_length=15, blank=True)
+    inscricao_municipal = models.CharField("Inscrição Municipal", max_length=15, blank=True)
     ### APELIDO/NOME FANTASIA ###
     nome_fantasia = models.CharField("Apelido/Nome Fantasia", max_length=100, blank=True)
-    telefone1 = models.CharField("Telefone Fixo", max_length=20)
-    telefone2 = models.CharField("Celular", max_length=20, blank=True)
+    endereco = models.ForeignKey(Endereco, null=True)
+    telefone1 = models.CharField("Telefone Principal", max_length=14)
+    telefone2 = models.CharField("Outro Telefone", max_length=14, blank=True)
     email = models.EmailField(blank=True)
     observacoes = models.TextField("Observações", blank=True)
-    tipo_pessoa = models.ForeignKey(TipoPessoa)
-    rg = models.CharField(max_length=15, blank=True)
-    data_nascimento = models.DateField(blank=True, null=True)
-    inscricao_estadual = models.CharField(max_length=15, blank=True)
-    inscricao_municipal = models.CharField(max_length=15, blank=True)
-    user = models.OneToOneField(User, null=True, blank=True)
-    endereco = models.ForeignKey(Endereco, null=True)
     #### Coluna para utilizar no search_field sem acentuacao
     search_dump = models.CharField(max_length=255, default='', blank=True, editable=False)
 
@@ -287,24 +293,26 @@ class DispositivoCliente(models.Model):
     # Vencimento de 1 a 28( por causa do Fevereiro )
     CHOICES = [(i,i) for i in range(29)]
 
-
+    ativo = models.BooleanField(default=True)
+    cliente = models.ForeignKey(Cliente, null=True,blank=True, on_delete=models.SET_NULL)
+    pessoa = models.ForeignKey(Pessoa, verbose_name="Dono do Aparelho")
+    mac_wan = models.CharField("MAC da WAN", max_length=17)
+    endereco = models.ForeignKey(Endereco, null=True, verbose_name="Endereço de Instalação")
+    vencimento = models.IntegerField(null=True, choices=CHOICES)
+    ip_acesso = models.CharField("IP de Acesso",max_length=50, blank=True, null=True)
+    ap = models.ForeignKey(AP, verbose_name="AP")
+    plano = models.ForeignKey(Plano, default='')
+    tipo_polaridade = models.ForeignKey(TipoPolaridade, verbose_name="Polaridade Instalada")
     fabricante = models.ForeignKey(Fabricante, null=True)
     equipamento = ChainedForeignKey(Equipamento, chained_field="fabricante", chained_model_field="fabricante", auto_choose=True, null=True)
     firmware = models.CharField(max_length=50, blank=True)
-    mac_wan = models.CharField(max_length=17)
-    foto_instalacao = models.ImageField(upload_to='DispositivoCliente/fotos', blank=True)
+    numero_serie = models.CharField(max_length=50, blank=True, default='')
     usuario = models.CharField(max_length=50, blank=True)
     senha = models.CharField(max_length=50, blank=True)
-    vencimento = models.IntegerField(null=True, choices=CHOICES)
+    foto_instalacao = models.ImageField(upload_to='DispositivoCliente/fotos', blank=True)
     arquivo_conf = models.FileField(upload_to='APs/arquivos', blank=True)
-    numero_serie = models.CharField(max_length=50, blank=True, default='')
-    ativo = models.BooleanField(default=False)
-    endereco = models.ForeignKey(Endereco, null=True)
-    ap = models.ForeignKey(AP)
-    plano = models.ForeignKey(Plano, default='')
-    pessoa = models.ForeignKey(Pessoa, verbose_name="dono")
-    cliente = models.ForeignKey(Cliente, null=True,blank=True, on_delete=models.SET_NULL)
-    tipo_polaridade = models.ForeignKey(TipoPolaridade)
+
+
 
     def file_(self):
         return '<a href="/media/{0}"><img src="/media/{0}" width="100" height="100"></a>'.format(self.arquivo_conf)

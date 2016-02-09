@@ -122,6 +122,83 @@ class ClienteAdmin(admin.ModelAdmin):
 class ClienteInline(admin.StackedInline):
         model = Cliente
 
+@admin.register(Estado)
+class EstadoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'abreviacao')
+    list_display_links = list_display
+    ordering = list_display
+    list_filter = ('abreviacao',)
+
+
+@admin.register(Cidade)
+class CidadeAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'estado')
+    list_display_links = list_display
+    ordering = list_display
+    list_filter = ('nome',)
+
+@admin.register(Bairro)
+class BairroAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'cidade')
+    list_display_links = list_display
+    ordering = list_display
+    list_filter = ('nome',)
+
+@admin.register(TipoEndereco)
+class TipoEnderecoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'abreviacao')
+    list_display_links = list_display
+    ordering = list_display
+    list_filter = ('abreviacao',)
+
+@admin.register(Rua)
+class RuaAdmin(admin.ModelAdmin):
+
+    list_display = ('get_nome', 'get_bairro', 'get_cidade', "get_estado")
+    list_display_links = list_display
+    ordering = ['nome',]
+    list_filter = ('tipo_endereco',)
+    search_fields = ('nome', 'search_dump')
+
+    def save_model(self, request, obj, form, change):
+        ### Gambiarra para procurar com string sem acentuacao
+        obj.search_dump = slugify(str(obj.nome))
+        obj.save()
+
+    def get_nome(self,obj):
+        return obj.tipo_endereco.abreviacao + " " + obj.nome
+
+    def get_bairro(self,obj):
+        return obj.bairro
+
+    def get_cidade(self,obj):
+        return obj.bairro.cidade
+
+    def get_estado(self,obj):
+        return obj.bairro.cidade.estado
+
+    get_nome.short_description = 'Nome'
+    get_bairro.short_description = 'Bairro'
+    get_cidade.short_description = 'Cidade'
+    get_estado.short_description = 'Estado'
+
+@admin.register(Cep)
+class CepAdmin(admin.ModelAdmin):
+    search_fields = ('estado__nome', 'cidade__nome', 'bairro__nome', 'rua__nome', 'rua__search_dump','codigo')
+    ordering = ['estado__nome', 'cidade__nome', 'bairro__nome', 'rua__nome']
+
+    class Media:
+        js = (
+            'jquery_1_11.js',
+            'cep.js',
+        )
+
+@admin.register(Endereco)
+class EnderecoAdmin(admin.ModelAdmin):
+    search_fields = ('cep__estado__nome', 'cep__cidade__nome', 'cep__bairro__nome', 'cep__rua__nome', 'cep__rua__search_dump','cep__codigo', 'numero')
+    raw_id_fields = ('cep',)
+    ordering = ['cep__estado__nome', 'cep__cidade__nome', 'cep__bairro__nome', 'cep__rua__nome', 'numero']
+
 @admin.register(Pessoa)
 class PessoaAdmin(admin.ModelAdmin):
     list_display = ('id', 'nome', 'codigo', 'nome_fantasia')
@@ -141,7 +218,7 @@ class PessoaAdmin(admin.ModelAdmin):
         )
 
     def save_model(self, request, obj, form, change):
-        ### Gambiarra para procura com string sem acentuacao
+        ### Gambiarra para procurar com string sem acentuacao
         obj.search_dump = slugify(str(obj.nome + " " + obj.nome_fantasia))
         obj.save()
 
@@ -183,75 +260,31 @@ class DispositivoClienteAdmin(admin.ModelAdmin):
     list_filter = ('equipamento',)
     raw_id_fields = ('endereco', 'pessoa', 'cliente')
 
+    class Media:
+        js = (
+            'jquery_1_11.js',
+            'dispositivoCliente.js',
+        )
+
     def get_dono(self,obj):
         return obj.pessoa.nome
 
     def get_cliente(self,obj):
-        return obj.cliente.pessoa.nome
+        if (isinstance(obj.cliente, Cliente)):
+            return obj.cliente.pessoa.nome
+        else:
+            return "Desativado"
+
 
     get_dono.short_description = 'Dono'
     get_cliente.short_description = 'Cliente'
-    
+
 @admin.register(Plano)
 class PlanoAdmin(admin.ModelAdmin):
     list_display = ('nome', 'valor')
     list_display_links = list_display
     ordering = list_display
     list_filter = ('nome',)
-
-
-@admin.register(Estado)
-class EstadoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'abreviacao')
-    list_display_links = list_display
-    ordering = list_display
-    list_filter = ('abreviacao',)
-
-
-@admin.register(Cidade)
-class CidadeAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'estado')
-    list_display_links = list_display
-    ordering = list_display
-    list_filter = ('nome',)
-
-@admin.register(Bairro)
-class BairroAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'cidade')
-    list_display_links = list_display
-    ordering = list_display
-    list_filter = ('nome',)
-
-@admin.register(TipoEndereco)
-class TipoEnderecoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'abreviacao')
-    list_display_links = list_display
-    ordering = list_display
-    list_filter = ('abreviacao',)
-
-@admin.register(Rua)
-class RuaAdmin(admin.ModelAdmin):
-
-    list_display = ('tipo_endereco','nome',)
-    list_display_links = list_display
-    ordering = list_display
-    list_filter = ('tipo_endereco',)
-    search_fields = ('nome',)
-
-@admin.register(Cep)
-class CepAdmin(admin.ModelAdmin):
-
-    list_display = ('id','codigo', 'rua')
-    list_display_links = list_display
-
-
-
-@admin.register(Endereco)
-class EnderecoAdmin(admin.ModelAdmin):
-    search_fields = ('estado__nome', 'cidade__nome', 'bairro__nome', 'rua__nome', 'numero')
-    ordering = ['estado__nome', 'cidade__nome', 'bairro__nome', 'rua__nome', 'numero']
-
-
 
 @admin.register(Recibo)
 class ReciboAdmin(admin.ModelAdmin):
